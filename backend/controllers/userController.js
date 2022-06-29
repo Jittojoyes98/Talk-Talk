@@ -16,18 +16,26 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("User already exist");
   }
 
-  const createUser = await User.create({
-    name,
-    email,
-    password,
-    pic,
-  });
+  let createUser;
+  if (pic === "") {
+    createUser = await User.create({
+      name,
+      email,
+      password,
+    });
+  } else {
+    createUser = await User.create({
+      name,
+      email,
+      pic,
+      password,
+    });
+  }
   if (createUser) {
     res.send({
       name,
       email,
-      password,
-      pic,
+      pic: createUser.pic,
       token: generateToken(createUser._id),
     });
   } else {
@@ -42,8 +50,9 @@ const loginAuthentication = asyncHandler(async (req, res) => {
 
   if (userExist && userExist.matchPassword(password)) {
     res.json({
+      pic: userExist.pic,
+      name: userExist.name,
       email,
-      password,
       token: generateToken(userExist._id),
     });
   } else {

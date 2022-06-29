@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 export default function Login() {
   const [show, setShow] = useState(false);
@@ -17,6 +18,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [load, setLoad] = useState(false);
   const toast = useToast();
+  const history = useHistory();
   const submitHandler = async () => {
     setLoad(true);
     if (!password || !email) {
@@ -44,8 +46,19 @@ export default function Login() {
         { email, password },
         config
       );
-      console.log(result);
+      const { data } = result;
+      // console.log(data);
       setLoad(false);
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      history.push("/chats");
+      toast({
+        title: "Login successful",
+        description: "",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
     } catch (error) {
       toast({
         title: "Invalid credentials",
