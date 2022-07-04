@@ -11,7 +11,7 @@ import {
 import axios from "axios";
 import React, { useState } from "react";
 
-export default function SignUp() {
+export default function SignUp({ setIndex, index }) {
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -62,6 +62,16 @@ export default function SignUp() {
       );
       console.log(data);
       setLoad(false);
+      toast({
+        title: "Registration successful",
+        description: "",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setIndex(0);
+      console.log(index);
     } catch (error) {
       const { message } = error.response.data;
       toast({

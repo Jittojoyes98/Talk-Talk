@@ -8,7 +8,7 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import Login from "../Components/Authentication/Login";
@@ -16,6 +16,7 @@ import SignUp from "../Components/Authentication/SignUp";
 
 export default function HomePage() {
   const history = useHistory();
+  const [index, setIndex] = useState(1);
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     // console.log(userInfo);
@@ -46,7 +47,7 @@ export default function HomePage() {
         borderRadius="lg"
         borderWidth="1px"
       >
-        <Tabs variant="soft-rounded">
+        <Tabs variant="soft-rounded" defaultIndex={index}>
           <TabList>
             <Tab>Login</Tab>
             <Tab>Sign Up</Tab>
@@ -56,7 +57,7 @@ export default function HomePage() {
               <Login />
             </TabPanel>
             <TabPanel>
-              <SignUp />
+              <SignUp setIndex={setIndex} index={index} />
             </TabPanel>
           </TabPanels>
         </Tabs>

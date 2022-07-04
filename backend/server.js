@@ -8,7 +8,7 @@ const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const { application } = require("express");
-
+const messageRoutes = require("./routes/messageRoutes");
 const PORT = process.env.PORT || 5000;
 connDB();
 
@@ -20,6 +20,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/message", messageRoutes);
 app.use(notFound);
 app.use(errorHandler);
 

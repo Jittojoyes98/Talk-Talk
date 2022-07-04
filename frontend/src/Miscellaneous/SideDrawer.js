@@ -32,13 +32,13 @@ import UserListItem from "./UserListItem";
 import { ChatContext } from "../Context/ChatProvider";
 // import User from "../../../backend/models/UserModel";
 
-export default function SideDrawer({ user }) {
+export default function SideDrawer() {
   const [search, setSearch] = useState();
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
   const history = useHistory();
   const [searchResult, setSearchResult] = useState([]);
-  const { selectedChat, setSelectedChat, chat, setChat, setUser } =
+  const { selectedChat, setSelectedChat, chat, setChat, setUser, user } =
     useContext(ChatContext);
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
@@ -110,6 +110,7 @@ export default function SideDrawer({ user }) {
         isClosable: true,
         position: "bottom-left",
       });
+      setLoadingChat(false);
     }
   };
   return (
@@ -172,7 +173,7 @@ export default function SideDrawer({ user }) {
       >
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader>Create your account</DrawerHeader>
+          <DrawerHeader>Search user and click to start chatting</DrawerHeader>
 
           <DrawerBody>
             <Box display="flex" p={1}>

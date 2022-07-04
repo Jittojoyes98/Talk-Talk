@@ -5,9 +5,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { getSender } from "../config/ChatLogics";
 import { ChatContext } from "../Context/ChatProvider";
 import ChatLoading from "./ChatLoading";
+import GroupChatModal from "./GroupChatModal";
 
-export default function MyChat({ user }) {
-  const { setSelectedChat, selectedChat, chat, setChat } =
+export default function MyChat({ fetchAgain }) {
+  const { setSelectedChat, selectedChat, chat, setChat, user } =
     useContext(ChatContext);
   const [loggedUser, setLoggedUser] = useState();
   const toast = useToast();
@@ -23,7 +24,7 @@ export default function MyChat({ user }) {
       console.log(data);
     } catch (error) {
       toast({
-        title: "Failed to load the chat",
+        title: "Failed to load the chat try again",
         description: error.message,
         status: "warning",
         duration: 5000,
@@ -35,7 +36,7 @@ export default function MyChat({ user }) {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChat();
-  }, []);
+  }, [fetchAgain]);
 
   return (
     <Box
@@ -60,13 +61,15 @@ export default function MyChat({ user }) {
         fontSize={{ base: "28px", md: "30px" }}
       >
         My Chats
-        <Button
-          display="flex"
-          fontSize={{ base: "17px", md: "10px", lg: "17px" }}
-          rightIcon={<AddIcon />}
-        >
-          New Group Chat
-        </Button>
+        <GroupChatModal>
+          <Button
+            display="flex"
+            fontSize={{ base: "17px", md: "10px", lg: "17px" }}
+            rightIcon={<AddIcon />}
+          >
+            New Group Chat
+          </Button>
+        </GroupChatModal>
       </Box>
       <Box
         display="flex"

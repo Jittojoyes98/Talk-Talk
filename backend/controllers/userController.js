@@ -33,6 +33,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
   if (createUser) {
     res.send({
+      _id: createUser._id,
       name,
       email,
       pic: createUser.pic,
@@ -50,6 +51,7 @@ const loginAuthentication = asyncHandler(async (req, res) => {
 
   if (userExist && userExist.matchPassword(password)) {
     res.json({
+      _id: userExist._id,
       pic: userExist.pic,
       name: userExist.name,
       email,
