@@ -8,20 +8,55 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 import { ChatContext } from "../Context/ChatProvider";
 import ProfileModal from "../Miscellaneous/ProfileModal";
 import UpdateGroupChatModel from "../Miscellaneous/UpdateGroupChatModel";
 import { useState } from "react";
 import axios from "axios";
+import ScrollableMessages from "./ScrollableMessages";
 
 const MessageArea = ({ fetchAgain, setFetchAgain }) => {
   const { user, setSelectedChat, selectedChat } = useContext(ChatContext);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState();
   const toast = useToast();
+
+  const renderMessages = async () => {
+    if (!selectedChat) {
+      return;
+    }
+    try {
+      setLoading(true);
+      const config = {
+        headers: {
+          authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.get(
+        `/api/message/${selectedChat._id}`,
+        config
+      );
+      console.log(data);
+      setMessages(data);
+    } catch (error) {
+      toast({
+        title: "Cannot fetch chat",
+        description: error.message,
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-right",
+      });
+    }
+    setLoading(false);
+  };
+  useEffect(() => {
+    renderMessages();
+  }, [selectedChat]);
+
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
       try {
@@ -112,18 +147,20 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
                   margin="auto"
                   alignSelf="center"
                 />
-                <FormControl onKeyDown={sendMessage} isRequired mt={3}>
-                  <Input
-                    variant="filled"
-                    placeholder="Enter a message"
-                    onChange={typingMessage}
-                    value={newMessage}
-                  />
-                </FormControl>
               </>
             ) : (
-              <></>
+              <>
+                <ScrollableMessages messages={messages} />
+              </>
             )}
+            <FormControl onKeyDown={sendMessage} isRequired mt={3}>
+              <Input
+                variant="filled"
+                placeholder="Enter a message"
+                value={newMessage}
+                onChange={typingMessage}
+              />
+            </FormControl>
           </Box>
         </>
       ) : (
