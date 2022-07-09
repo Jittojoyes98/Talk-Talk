@@ -17,12 +17,22 @@ import { useState } from "react";
 import axios from "axios";
 import ScrollableMessages from "./ScrollableMessages";
 
+import io from "socket.io-client";
+
+var socket, selectedChatCompare;
+const ENDPOINT = "http://localhost:5000";
+
 const MessageArea = ({ fetchAgain, setFetchAgain }) => {
   const { user, setSelectedChat, selectedChat } = useContext(ChatContext);
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState();
   const toast = useToast();
+
+  useEffect(() => {
+    socket = io.connect(ENDPOINT);
+    socket.emit("setup", user);
+  }, []);
 
   const renderMessages = async () => {
     if (!selectedChat) {
@@ -41,6 +51,7 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
       );
       console.log(data);
       setMessages(data);
+      socket.emit("join_chat", selectedChat._id);
     } catch (error) {
       toast({
         title: "Cannot fetch chat",
@@ -55,6 +66,7 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
   };
   useEffect(() => {
     renderMessages();
+    selectedChatCompare = selectedChat;
   }, [selectedChat]);
 
   const sendMessage = async (event) => {
@@ -76,8 +88,9 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
-        console.log(data);
+        // console.log(data);
         setMessages([...messages, data]);
+        socket.emit("new message", data);
       } catch (error) {
         toast({
           title: "Cannot send the message",
@@ -90,6 +103,16 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
       }
     }
   };
+  useEffect(() => {
+    socket.on("message recieved", (data) => {
+      // some conditions for notification
+      if (!selectedChatCompare || selectedChat._id !== data.chat._id) {
+        return;
+      }
+      setMessages([...messages, data]);
+    });
+  });
+
   const typingMessage = async (e) => {
     setNewMessage(e.target.value);
   };
