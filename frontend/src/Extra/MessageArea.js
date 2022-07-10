@@ -27,6 +27,7 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState();
+  const [isTyping, setIsTyping] = useState(false);
   const toast = useToast();
 
   useEffect(() => {
@@ -71,6 +72,7 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
 
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
+      socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
           headers: {
@@ -111,10 +113,33 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
       }
       setMessages([...messages, data]);
     });
+    socket.on("typing", (data) => {
+      // console.log(data.message);
+      setIsTyping(true);
+    });
+    socket.on("stop typing", (data) => {
+      // console.log(data.message);
+      setIsTyping(false);
+    });
   });
 
   const typingMessage = async (e) => {
     setNewMessage(e.target.value);
+    // typing indicator logic
+    // forget the logic of socket
+    if (!socket) {
+      return;
+    }
+
+    socket.emit("typing", selectedChat._id);
+    const timeNow = new Date().getTime();
+    const timePeriod = 3000;
+    setTimeout(() => {
+      const timeThen = new Date().getTime();
+      if (timeThen - timeNow >= 3000) {
+        socket.emit("stop typing", selectedChat._id);
+      }
+    }, timePeriod);
   };
   return (
     <>
@@ -177,6 +202,7 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
               </>
             )}
             <FormControl onKeyDown={sendMessage} isRequired mt={3}>
+              {isTyping ? <div>loading</div> : <></>}
               <Input
                 variant="filled"
                 placeholder="Enter a message"
