@@ -46,12 +46,20 @@ io.on("connection", (socket) => {
     socket.join(room);
     console.log("Joined the room " + room);
   });
+
+  socket.on("typing", (room) => {
+    socket.in(room).emit("typing", { message: "Typing going on" });
+  });
+
+  socket.on("stop typing", (room) => {
+    socket.in(room).emit("stop typing", { message: "Typing stopped" });
+  });
   socket.on("new message", (newMessage) => {
     if (!newMessage.chat.users) {
       return console.log("newMessage.chat.users not defined");
     }
     const chat = newMessage.chat;
-    console.log(newMessage.sender._id);
+    // console.log(newMessage.sender._id);
     chat.users.forEach((user) => {
       if (user._id === newMessage.sender._id) {
         return;
