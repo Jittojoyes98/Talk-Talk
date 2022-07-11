@@ -8,6 +8,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
+import animationData from "../animation/animationData.json";
 import React, { useContext, useEffect } from "react";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 import { ChatContext } from "../Context/ChatProvider";
@@ -16,6 +17,7 @@ import UpdateGroupChatModel from "../Miscellaneous/UpdateGroupChatModel";
 import { useState } from "react";
 import axios from "axios";
 import ScrollableMessages from "./ScrollableMessages";
+import Lottie from "react-lottie";
 
 import io from "socket.io-client";
 
@@ -29,6 +31,14 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
   const [newMessage, setNewMessage] = useState();
   const [isTyping, setIsTyping] = useState(false);
   const toast = useToast();
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   useEffect(() => {
     socket = io.connect(ENDPOINT);
@@ -202,7 +212,18 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
               </>
             )}
             <FormControl onKeyDown={sendMessage} isRequired mt={3}>
-              {isTyping ? <div>loading</div> : <></>}
+              {isTyping ? (
+                <div>
+                  <Lottie
+                    options={defaultOptions}
+                    width={70}
+                    height={40}
+                    style={{ marginLeft: 0, marginBottom: 15 }}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
               <Input
                 variant="filled"
                 placeholder="Enter a message"
