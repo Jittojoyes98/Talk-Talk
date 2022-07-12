@@ -25,7 +25,8 @@ var socket, selectedChatCompare;
 const ENDPOINT = "http://localhost:5000";
 
 const MessageArea = ({ fetchAgain, setFetchAgain }) => {
-  const { user, setSelectedChat, selectedChat } = useContext(ChatContext);
+  const { user, setSelectedChat, selectedChat, notification, setNotification } =
+    useContext(ChatContext);
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState();
@@ -60,7 +61,6 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
         `/api/message/${selectedChat._id}`,
         config
       );
-      console.log(data);
       setMessages(data);
       socket.emit("join_chat", selectedChat._id);
     } catch (error) {
@@ -115,20 +115,24 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
       }
     }
   };
+  console.log(notification);
   useEffect(() => {
     socket.on("message recieved", (data) => {
-      // some conditions for notification
+      // console.log("The message recieved is " + data);
       if (!selectedChatCompare || selectedChat._id !== data.chat._id) {
+        // show notifications
+        if (!notification.includes(data)) {
+          setNotification([data, ...notification]);
+          setFetchAgain(!fetchAgain);
+        }
         return;
       }
       setMessages([...messages, data]);
     });
     socket.on("typing", (data) => {
-      // console.log(data.message);
       setIsTyping(true);
     });
     socket.on("stop typing", (data) => {
-      // console.log(data.message);
       setIsTyping(false);
     });
   });
