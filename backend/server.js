@@ -7,24 +7,41 @@ dotenv.config();
 const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
-const { application } = require("express");
 const messageRoutes = require("./routes/messageRoutes");
 const PORT = process.env.PORT || 5000;
 connDB();
 
 const { Server } = require("socket.io");
+const path = require("path");
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("API is running");
-});
+// app.get("/", (req, res) => {
+//   res.send("API is running");
+// });
 
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 app.use(notFound);
 app.use(errorHandler);
+
+// -------------------------Deployment--------------------------------
+
+const __dirname1 = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname1, "/frontend/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running");
+  });
+}
+
+// -------------------------Deployment--------------------------------
 
 const server = app.listen(
   PORT,
@@ -67,8 +84,8 @@ io.on("connection", (socket) => {
       socket.in(user._id).emit("message recieved", newMessage);
     });
   });
-  // socket.off("setup", () => {
-  //   console.log("Disconnected");
-  //   socket.leave(user._id);
-  // });
+  socket.off("setup", () => {
+    console.log("Disconnected");
+    socket.leave(user._id);
+  });
 });

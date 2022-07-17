@@ -22,7 +22,7 @@ import Lottie from "react-lottie";
 import io from "socket.io-client";
 
 var socket, selectedChatCompare;
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "https://mern-talk-talk.herokuapp.com/";
 
 const MessageArea = ({ fetchAgain, setFetchAgain }) => {
   const { user, setSelectedChat, selectedChat, notification, setNotification } =
@@ -118,7 +118,7 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
   console.log(notification);
   useEffect(() => {
     socket.on("message recieved", (data) => {
-      // console.log("The message recieved is " + data);
+      console.log("The message recieved is " + data);
       if (!selectedChatCompare || selectedChat._id !== data.chat._id) {
         // show notifications
         if (!notification.includes(data)) {
