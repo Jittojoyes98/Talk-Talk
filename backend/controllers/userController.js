@@ -54,7 +54,9 @@ const loginAuthentication = asyncHandler(async (req, res) => {
       _id: userExist._id,
       pic: userExist.pic,
       name: userExist.name,
+
       email: userExist.email,
+      email,
       token: generateToken(userExist._id),
     });
   } else {
