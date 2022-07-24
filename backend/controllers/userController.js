@@ -48,13 +48,13 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginAuthentication = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const userExist = await User.findOne({ email });
-
-  if (userExist && userExist.matchPassword(password)) {
+  const result = await userExist.matchPassword(password);
+  if (userExist && result) {
     res.json({
       _id: userExist._id,
       pic: userExist.pic,
       name: userExist.name,
-      email,
+      email: userExist.email,
       token: generateToken(userExist._id),
     });
   } else {
