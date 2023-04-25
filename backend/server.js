@@ -16,7 +16,15 @@ connDB();
 const { Server } = require("socket.io");
 const path = require("path");
 
-app.use(cors(corsOptions))
+app.use(cors());
+app.use((req,res,next)=>{
+    res.header('Access-Control-Allow-Headers, *, Access-Control-Allow-Origin', 'Origin, X-Requested-with, Content_Type,Accept,Authorization','https://talk-talk-api.onrender.com');
+    if(req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods','PUT,POST,PATCH,DELETE,GET');
+        return res.status(200).json({});
+    }
+    next();
+});
 
 
 app.use(express.json());
