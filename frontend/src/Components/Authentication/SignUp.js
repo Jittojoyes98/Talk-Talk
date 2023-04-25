@@ -56,7 +56,7 @@ export default function SignUp({ setIndex, index }) {
       };
 
       const { data } = await axios.post(
-        "https://talk-talk-api.onrender.com/api/user",
+        "https://talk-talk-api.onrender.com/api/",
         { name, email, password, pic },
         config
       );
