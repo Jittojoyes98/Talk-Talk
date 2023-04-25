@@ -45,7 +45,7 @@ const GroupChatModal = ({ children }) => {
         },
       };
       const { data } = await axios.post(
-        "/api/chat/group",
+        "https://talk-talk-api.onrender.com/api/chat/group",
         {
           name: groupChatName,
           users: JSON.stringify(selectedUsers),
@@ -86,7 +86,7 @@ const GroupChatModal = ({ children }) => {
           authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const { data } = await axios.get(`https://talk-talk-api.onrender.com/api/user?search=${search}`, config);
       console.log(data);
       setLoading(false);
       setSearchResult(data);

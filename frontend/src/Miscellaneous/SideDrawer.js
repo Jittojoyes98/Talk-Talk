@@ -79,7 +79,7 @@ export default function SideDrawer() {
           authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const { data } = await axios.get(`https://talk-talk-api.onrender.com/api/user?search=${search}`, config);
       setLoading(false);
       setSearchResult(data);
       console.log(searchResult);

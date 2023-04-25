@@ -19,7 +19,7 @@ export default function MyChat({ fetchAgain }) {
           authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get("/api/chat", config);
+      const { data } = await axios.get("https://talk-talk-api.onrender.com/api/chat", config);
       setChat(data);
       console.log(data);
     } catch (error) {
