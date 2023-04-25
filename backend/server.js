@@ -4,6 +4,8 @@ const dotenv = require("dotenv");
 const chats = require("./data/data");
 const connDB = require("./config/data");
 dotenv.config();
+const cors = require('cors')
+const corsOptions = require("./config/corsOptions");
 const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
@@ -13,6 +15,9 @@ connDB();
 
 const { Server } = require("socket.io");
 const path = require("path");
+
+app.use(cors(corsOptions))
+
 
 app.use(express.json());
 
@@ -48,12 +53,7 @@ const server = app.listen(
   console.log(`Server has started on port ${PORT}`)
 );
 
-const io = new Server(server, {
-  pingTimeout: 60000,
-  cors: {
-    origin: "http://localhost:3000",
-  },
-});
+const io = new Server(server, {...corsOptions,pingTimeout:60000});
 
 io.on("connection", (socket) => {
   socket.on("setup", (user) => {
