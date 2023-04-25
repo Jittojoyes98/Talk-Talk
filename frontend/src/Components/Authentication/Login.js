@@ -42,7 +42,7 @@ export default function Login() {
       };
 
       const result = await axios.post(
-        "api/user/login",
+        "https://talk-talk-api.onrender.com/api/user/login",
         { email, password },
         config
       );
