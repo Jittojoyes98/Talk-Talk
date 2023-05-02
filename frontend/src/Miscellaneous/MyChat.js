@@ -37,7 +37,6 @@ export default function MyChat({ fetchAgain }) {
     }
   };
   useEffect(() => {
-    console.log(JSON.parse(localStorage.getItem("userInfo")),"PARSED DATA");
     const userInfo=JSON.parse(localStorage.getItem("userInfo"))
     setLoggedUser(userInfo);
     fetchChat();
