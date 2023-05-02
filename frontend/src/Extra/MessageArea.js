@@ -22,7 +22,7 @@ import Lottie from "react-lottie";
 import io from "socket.io-client";
 
 var socket, selectedChatCompare;
-const ENDPOINT = "https://talk-talk-api.onrender.com";
+const ENDPOINT = "https://talk-talk-api.onrender.com/";
 
 const MessageArea = ({ fetchAgain, setFetchAgain }) => {
   const { user, setSelectedChat, selectedChat, notification, setNotification } =

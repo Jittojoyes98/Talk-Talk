@@ -12,8 +12,9 @@ export default function MyChat({ fetchAgain }) {
     useContext(ChatContext);
   const [loggedUser, setLoggedUser] = useState();
   const toast = useToast();
-  console.log(user);
+  
   const fetchChat = async () => {
+    console.log(user);
     try {
       const config = {
         headers: {
