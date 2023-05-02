@@ -1,5 +1,5 @@
 const allowedOrigins = [
-    'https://talk-talk.onrender.com/'
+    'https://talk-talk.onrender.com'
 ]
 
 module.exports = allowedOrigins
