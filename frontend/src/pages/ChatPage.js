@@ -14,7 +14,6 @@ export default function ChatPage() {
   const [fetchAgain, setFetchAgain] = useState(false);
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    console.log(userInfo);
     setUser(userInfo);
     if (userInfo === null) {
       history.push("/");

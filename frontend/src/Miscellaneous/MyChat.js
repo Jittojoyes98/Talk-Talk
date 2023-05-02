@@ -12,6 +12,7 @@ export default function MyChat({ fetchAgain }) {
     useContext(ChatContext);
   const [loggedUser, setLoggedUser] = useState();
   const toast = useToast();
+  console.log(user);
   const fetchChat = async () => {
     try {
       const config = {
@@ -34,7 +35,9 @@ export default function MyChat({ fetchAgain }) {
     }
   };
   useEffect(() => {
-    setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
+    console.log(JSON.parse(localStorage.getItem("userInfo")),"PARSED DATA");
+    const userInfo=JSON.parse(localStorage.getItem("userInfo"))
+    setLoggedUser(userInfo);
     fetchChat();
   }, [fetchAgain]);
 
