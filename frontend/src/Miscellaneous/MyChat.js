@@ -18,7 +18,7 @@ export default function MyChat({ fetchAgain }) {
     try {
       const config = {
         headers: {
-          authorization: `Bearer ${user.token}`,
+          authorization: `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`,
         },
       };
       const { data } = await axios.get("https://talk-talk-api.onrender.com/api/chat", config);
