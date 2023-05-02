@@ -175,10 +175,13 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
               onClick={() => setSelectedChat("")}
             />
             {!selectedChat.isGroupChat ? (
+              user ? 
               <>
                 {getSender(user, selectedChat.users)}
                 <ProfileModal user={getSenderFull(user, selectedChat.users)} />
               </>
+              :
+              <></>
             ) : (
               <>
                 {selectedChat.chatName.toUpperCase()}

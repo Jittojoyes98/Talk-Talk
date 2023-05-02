@@ -25,6 +25,7 @@ export default function MyChat({ fetchAgain }) {
       setChat(data);
       console.log(data);
     } catch (error) {
+      console.log(error);
       toast({
         title: "Failed to load the chat try again",
         description: error.message,
