@@ -119,7 +119,7 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     socket.on("message_recieved", (data) => {
       console.log("The message recieved is " + data);
-      if (!selectedChatCompare || selectedChat._id !== data.chat._id) {
+      if (!selectedChatCompare || selectedChat?._id !== data.chat._id) {
         // show notifications
         if (!notification.includes(data)) {
           setNotification([data, ...notification]);
