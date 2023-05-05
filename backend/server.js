@@ -61,9 +61,14 @@ const server = app.listen(
   console.log(`Server has started on port ${PORT}`)
 );
 
-const io = new Server(server, {...corsOptions,pingTimeout:60000});
+const io = new Server(server, {cors :{
+  origin:"https://talk-talk.onrender.com",
+  credentials: true,
+  optionsSuccessStatus: 200
+},pingTimeout:60000});
 
 io.on("connection", (socket) => {
+
   socket.on("setup", (user) => {
     socket.join(user._id);
   });
@@ -79,17 +84,17 @@ io.on("connection", (socket) => {
   socket.on("stop typing", (room) => {
     socket.in(room).emit("stop typing", { message: "Typing stopped" });
   });
-  socket.on("new message", (newMessage) => {
+  socket.on("new_message", (newMessage) => {
     if (!newMessage.chat.users) {
       return console.log("newMessage.chat.users not defined");
     }
     const chat = newMessage.chat;
-    // console.log(newMessage.sender._id);
+    console.log(newMessage.sender._id);
     chat.users.forEach((user) => {
       if (user._id === newMessage.sender._id) {
         return;
       }
-      socket.in(user._id).emit("message recieved", newMessage);
+      socket.in(user._id).emit("message_recieved", newMessage);
     });
   });
   socket.off("setup", () => {

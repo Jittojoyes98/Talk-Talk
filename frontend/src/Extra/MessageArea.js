@@ -62,6 +62,7 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
         config
       );
       setMessages(data);
+      console.log("SELCTED CHAT IS",selectedChat._id)
       socket.emit("join_chat", selectedChat._id);
     } catch (error) {
       toast({
@@ -100,9 +101,8 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
-        // console.log(data);
         setMessages([...messages, data]);
-        socket.emit("new message", data);
+        socket.emit("new_message", data);
       } catch (error) {
         toast({
           title: "Cannot send the message",
@@ -117,7 +117,7 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
   };
   console.log(notification);
   useEffect(() => {
-    socket.on("message recieved", (data) => {
+    socket.on("message_recieved", (data) => {
       console.log("The message recieved is " + data);
       if (!selectedChatCompare || selectedChat._id !== data.chat._id) {
         // show notifications
