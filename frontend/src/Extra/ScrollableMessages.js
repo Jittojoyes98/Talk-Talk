@@ -11,7 +11,7 @@ import { ChatContext } from "../Context/ChatProvider";
 const ScrollableMessages = ({ messages }) => {
   const { user } = useContext(ChatContext);
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ display: "flex", flexDirection: "column" ,overflowY:"scroll"}}>
       {messages &&
         messages.map((m, i) => (
           <div
