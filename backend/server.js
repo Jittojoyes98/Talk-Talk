@@ -89,12 +89,11 @@ io.on("connection", (socket) => {
       return console.log("newMessage.chat.users not defined");
     }
     const chat = newMessage.chat;
-    console.log(newMessage.sender._id);
-    chat.users.forEach((user) => {
-      if (user._id === newMessage.sender._id) {
+    chat.users.forEach((userChat) => {
+      if (userChat._id === newMessage.sender._id) {
         return;
       }
-      socket.in(user._id).emit("message_recieved", newMessage);
+      socket.in(userChat._id).emit("message_recieved", newMessage);
     });
   });
   socket.off("setup", () => {
