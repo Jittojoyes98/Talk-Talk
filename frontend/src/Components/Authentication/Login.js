@@ -9,7 +9,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 export default function Login() {
@@ -17,6 +17,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [load, setLoad] = useState(false);
+  const [isGuest, setIsGuest] = useState(false);
   const toast = useToast();
   const history = useHistory();
   const submitHandler = async () => {
@@ -71,7 +72,20 @@ export default function Login() {
       setLoad(false);
     }
   };
-  const submitGuest = () => {};
+  const submitGuest = () => {
+    setIsGuest(true);
+    if (!email || !password) {
+      setEmail("guest123@gmail.com");
+      setPassword("Guest@123");
+    }
+  };
+
+  useEffect(() => {
+    if (isGuest && email && password) {
+      submitHandler();
+      setIsGuest(false);
+    }
+  }, [isGuest, email, password]);
   return (
     <VStack spacing={"5px"}>
       <FormControl isRequired>
@@ -81,6 +95,7 @@ export default function Login() {
           type="email"
           placeholder="Enter your Email"
           required
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
       </FormControl>
@@ -92,6 +107,7 @@ export default function Login() {
             type={show ? "text" : "password"}
             placeholder="Enter your Password"
             required
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <InputRightElement width={"4.5rem"}>
