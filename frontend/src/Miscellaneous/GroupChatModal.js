@@ -28,7 +28,8 @@ const GroupChatModal = ({ children }) => {
   const toast = useToast();
   const { user, chat, setChat } = useContext(ChatContext);
   const handleSubmit = async () => {
-    if (!groupChatName || !selectedUsers) {
+    let isUserAdded = selectedUsers.length;
+    if (!groupChatName || !isUserAdded) {
       toast({
         title: "Please fill all the fields",
         status: "warning",
@@ -63,10 +64,9 @@ const GroupChatModal = ({ children }) => {
         position: "top",
       });
     } catch (error) {
-      console.log(error);
       toast({
         title: "Error occured",
-        description: error.message,
+        description: error.response.data,
         status: "warning",
         duration: 5000,
         isClosable: true,
