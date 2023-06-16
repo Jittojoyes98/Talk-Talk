@@ -105,7 +105,11 @@ export default function SideDrawer() {
           authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.post("api/chat", { userId }, config);
+      const { data } = await axios.post(
+        "https://talk-talk-api.onrender.com/api/chat",
+        { userId },
+        config
+      );
 
       //  if there is an already existing chat, then update it.
       // haven't done this part
