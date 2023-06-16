@@ -12,16 +12,21 @@ export default function MyChat({ fetchAgain }) {
     useContext(ChatContext);
   const [loggedUser, setLoggedUser] = useState();
   const toast = useToast();
-  
+
   const fetchChat = async () => {
     console.log(user);
     try {
       const config = {
         headers: {
-          authorization: `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`,
+          authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("userInfo")).token
+          }`,
         },
       };
-      const { data } = await axios.get("https://talk-talk-api.onrender.com/api/chat", config);
+      const { data } = await axios.get(
+        "https://talk-talk-api.onrender.com/api/chat",
+        config
+      );
       setChat(data);
       console.log(data);
     } catch (error) {
@@ -37,7 +42,7 @@ export default function MyChat({ fetchAgain }) {
     }
   };
   useEffect(() => {
-    const userInfo=JSON.parse(localStorage.getItem("userInfo"))
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     setLoggedUser(userInfo);
     fetchChat();
   }, [fetchAgain]);
@@ -97,7 +102,7 @@ export default function MyChat({ fetchAgain }) {
                 key={singlechat._id}
               >
                 <Text>
-                  {!singlechat.isGroupChat
+                  {!singlechat.isGroupChat && loggedUser
                     ? getSender(loggedUser, singlechat.users)
                     : singlechat.chatName}
                 </Text>

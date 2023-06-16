@@ -171,20 +171,26 @@ export default function SideDrawer() {
                 {!notification.length && (
                   <div style={{ textAlign: "center" }}>No new messages</div>
                 )}
-                {notification?.map((notif, id) => (
-                  <div
-                    key={id}
-                    style={{ textAlign: "center" }}
-                    onClick={() => {
-                      setSelectedChat(notif.chat);
-                      setNotification(notification.filter((n) => n !== notif));
-                    }}
-                  >
-                    {notif.chat.isGroupChat
-                      ? `Message from ${notif.chat.chatName}`
-                      : `Message from ${getSender(user, notif.chat.users)}`}
-                  </div>
-                ))}
+                {notification.length > 0 ? (
+                  notification.map((notif, id) => (
+                    <div
+                      key={id}
+                      style={{ textAlign: "center" }}
+                      onClick={() => {
+                        setSelectedChat(notif.chat);
+                        setNotification(
+                          notification.filter((n) => n !== notif)
+                        );
+                      }}
+                    >
+                      {notif.chat.isGroupChat
+                        ? `Message from ${notif.chat.chatName}`
+                        : `Message from ${getSender(user, notif.chat.users)}`}
+                    </div>
+                  ))
+                ) : (
+                  <></>
+                )}
               </MenuList>
             </Menu>
             <Menu>
