@@ -63,6 +63,7 @@ const GroupChatModal = ({ children }) => {
         position: "top",
       });
     } catch (error) {
+      console.log(error);
       toast({
         title: "Error occured",
         description: error.message,
@@ -86,7 +87,10 @@ const GroupChatModal = ({ children }) => {
           authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`https://talk-talk-api.onrender.com/api/user?search=${search}`, config);
+      const { data } = await axios.get(
+        `https://talk-talk-api.onrender.com/api/user?search=${search}`,
+        config
+      );
       console.log(data);
       setLoading(false);
       setSearchResult(data);
