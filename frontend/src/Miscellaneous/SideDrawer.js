@@ -117,7 +117,7 @@ export default function SideDrawer() {
     } catch (error) {
       toast({
         title: "Error fetching chat",
-        description: error.message,
+        description: error.response.data,
         status: "warning",
         duration: 5000,
         isClosable: true,

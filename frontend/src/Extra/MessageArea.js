@@ -62,7 +62,7 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
         config
       );
       setMessages(data);
-      console.log("SELCTED CHAT IS",selectedChat._id)
+      console.log("SELCTED CHAT IS", selectedChat._id);
       socket.emit("join_chat", selectedChat._id);
     } catch (error) {
       toast({
@@ -175,13 +175,16 @@ const MessageArea = ({ fetchAgain, setFetchAgain }) => {
               onClick={() => setSelectedChat("")}
             />
             {!selectedChat.isGroupChat ? (
-              user ? 
-              <>
-                {getSender(user, selectedChat.users)}
-                <ProfileModal user={getSenderFull(user, selectedChat.users)} />
-              </>
-              :
-              <></>
+              user ? (
+                <>
+                  {/* {getSender(user, selectedChat.users)} */}
+                  <ProfileModal
+                    user={getSenderFull(user, selectedChat.users)}
+                  />
+                </>
+              ) : (
+                <></>
+              )
             ) : (
               <>
                 {selectedChat.chatName.toUpperCase()}
