@@ -85,7 +85,6 @@ export default function SideDrawer() {
       );
       setLoading(false);
       setSearchResult(data);
-      console.log(searchResult);
     } catch (error) {
       toast({
         title: "Error occured",
@@ -172,7 +171,7 @@ export default function SideDrawer() {
                 {!notification.length && (
                   <div style={{ textAlign: "center" }}>No new messages</div>
                 )}
-                {notification.map((notif, id) => (
+                {notification?.map((notif, id) => (
                   <div
                     key={id}
                     style={{ textAlign: "center" }}
